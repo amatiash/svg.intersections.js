@@ -1,0 +1,29 @@
+{
+  "name": "svg.intersections.js",
+  "version": "0.0.0",
+  "description": "Intersection plugin for svg.js",
+  "keywords": [
+    "svg",
+    "svg.js",
+    "intersection",
+    "intersections",
+    "plugin"
+  ],
+  "author": "Anton Matiashevich <a.matiashevich@gmail.com>",
+  "main": "svg.intersections.js",
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://www.opensource.org/licenses/mit-license.php"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/amatiash/svg.intersections.js.git"
+  },
+  "github": "https://github.com/amatiash/svg.intersections.js",
+  "license": "MIT",
+  "dependencies": {
+    "svg.js": "^2.3.4"
+  }
+}
