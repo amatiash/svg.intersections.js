@@ -1,6 +1,10 @@
 # svg.intersections.js
 Intersections plugin for svg.js
 
+Find intersections of paths and lines.
+
+---
+
 AMD and CommonJS supported.
  
 You can also include a compiled version in ./dist folder.
