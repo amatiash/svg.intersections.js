@@ -19,7 +19,7 @@
 <div id="drawing"></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/svg.js/2.3.4/svg.min.js"></script>
-<script src="dist/svg.intersections.js"></script>
+<script src="svg.intersections.js"></script>
 <script>
 
     var draw   = SVG('drawing').size(400, 400),
@@ -62,7 +62,7 @@
         _drawTestPoint(point);
     });
 
-    _drawTestPoint(line1Line2Point);
+    line1Line2Point && _drawTestPoint(line1Line2Point);
 
     curveLine2Points.forEach(function(point){
         _drawTestPoint(point);

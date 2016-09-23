@@ -23,12 +23,15 @@
 (function(root, factory){
 
     if(typeof define === 'function' && define.amd)
-        define(['svg.js', 'distance-to-line-segment'], factory);
+        define(['svg.js'], factory);
 
     else if(typeof module === 'object' && module.exports)
-        module.exports = factory(require('svg.js'), require('distance-to-line-segment'));
+        module.exports = factory(require('svg.js'));
 
-}(this, function(SVG, distanceToLineSegment){
+    else
+        root.SVGIntersections = factory(root.SVG);
+
+}(this, function(SVG){
 
     var defaults = {
         segmentLength: 10
@@ -176,7 +179,6 @@
      *
      * @param    {Position} line1Pos - First line start&end position
      * @param    {Position} line2Pos - Second line start&end position
-     *
      * @returns  {Point|undefined}   - Intersection point or undefined
      */
     function linePos_linePos(line1Pos, line2Pos){
@@ -210,35 +212,29 @@
             return;
 
         // Check if any of start/end points are at another line
+        // ----------------------------------------------------
 
-        line1StartInLine2 = distanceToLineSegment(line2StartX, line2StartY, line2EndX, line2EndY, line1StartX, line1StartY);
-        line1EndInLine2   = distanceToLineSegment(line2StartX, line2StartY, line2EndX, line2EndY, line1EndX, line1EndY);
-        line2StartInLine1 = distanceToLineSegment(line1StartX, line1StartY, line1EndX, line1EndY, line2StartX, line2StartY);
-        line2EndInLine1   = distanceToLineSegment(line1StartX, line1StartY, line1EndX, line1EndY, line2EndX, line2EndY);
+        line2StartInLine1 = isPointOnLine(line1StartX, line1StartY, line1EndX, line1EndY, line2StartX, line2StartY);
 
-        if(line1StartInLine2 === 0)
-            return {
-                x: line1StartX,
-                y: line1StartY
-            };
+        if(line2StartInLine1)
+            return line2StartInLine1;
 
-        if(line1EndInLine2 === 0)
-            return {
-                x: line1EndX,
-                y: line1EndY
-            };
+        line2EndInLine1 = isPointOnLine(line1StartX, line1StartY, line1EndX, line1EndY, line2EndX, line2EndY);
 
-        if(line2StartInLine1 === 0)
-            return {
-                x: line2StartX,
-                y: line2StartY
-            };
+        if(line2EndInLine1)
+            return line2EndInLine1;
 
-        if(line2EndInLine1 === 0)
-            return {
-                x: line2EndX,
-                y: line2EndY
-            };
+        line1StartInLine2 = isPointOnLine(line2StartX, line2StartY, line2EndX, line2EndY, line1StartX, line1StartY);
+
+        if(line1StartInLine2)
+            return line1StartInLine2;
+
+        line1EndInLine2 = isPointOnLine(line2StartX, line2StartY, line2EndX, line2EndY, line1EndX, line1EndY);
+
+        if(line1EndInLine2)
+            return line1EndInLine2;
+
+        // ----------------------------------------------------
 
         a          = line1StartY - line2StartY;
         b          = line1StartX - line2StartX;
@@ -270,7 +266,9 @@
     }
 
     /**
-     * Get Start&end points from a line
+     * Get start&end points from a line
+     * @function fromLineToLinePos
+     *
      * @param   {Object} line                  - SVG.Line element
      * @returns {{x1: *, y1: *, x2: *, y2: *}} - Start&end points
      */
@@ -284,10 +282,53 @@
         }
     }
 
+    /**
+     * Find length between two points
+     * @function lengthBetweenTwoPoints
+     *
+     * @param   {number} x1 - Start point x
+     * @param   {number} y1 - Start point y
+     * @param   {number} x2 - End point x
+     * @param   {number} y2 - End point y
+     * @returns {number}    - Length between start&end position
+     */
+    function lengthBetweenTwoPoints(x1, y1, x2, y2){
+        var a = x1 - x2,
+            b = y1 - y2;
+        return Math.sqrt(a * a + b * b);
+    }
+
+    /**
+     * Check if point is on line
+     * @function isPointOnLine
+     *
+     * @param   {number} x1       - Start point x
+     * @param   {number} y1       - Start point y
+     * @param   {number} x2       - End point x
+     * @param   {number} y2       - End point y
+     * @param   {number} x        - Check point x
+     * @param   {number} y        - Check point y
+     * @returns {Point|undefined} - Check point or undefined
+     */
+    function isPointOnLine(x1, y1, x2, y2, x, y){
+        var lineLength     = lengthBetweenTwoPoints(x1, y1, x2, y2),
+            segment1Length = lengthBetweenTwoPoints(x1, y1, x, y),
+            segment2Length = lengthBetweenTwoPoints(x2, y2, x, y),
+            onLine         = lineLength === segment1Length + segment2Length;
+
+        if(onLine)
+            return {
+                x: x,
+                y: y
+            }
+    }
+
     return {
-        path_linePos   : path_linePos,
-        linePos_linePos: linePos_linePos,
-        fromLineToLinePos: fromLineToLinePos
+        path_linePos          : path_linePos,
+        linePos_linePos       : linePos_linePos,
+        fromLineToLinePos     : fromLineToLinePos,
+        lengthBetweenTwoPoints: lengthBetweenTwoPoints,
+        isPointOnLine         : isPointOnLine
     };
 
 }));

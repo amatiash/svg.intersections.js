@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Point on line test</title>
+
+    <style>
+        #drawing {
+            text-align: center;
+        }
+
+        #drawing svg {
+            border: 1px dashed gray;
+        }
+    </style>
+</head>
+<body>
+
+<div id="drawing"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/svg.js/2.3.4/svg.min.js"></script>
+<script src="../svg.intersections.js"></script>
+<script>
+
+    var draw  = SVG('drawing').size(400, 400),
+        line1 = draw.line(50, 50, 50, 300)
+                .attr({
+                    stroke        : 'blueviolet',
+                    'stroke-width': 2
+                }),
+        line2 = draw.line(50, 200, 350, 250)
+                .attr({
+                    stroke        : 'darkorange',
+                    'stroke-width': 2
+                });
+
+    var line1Line2Point = line1.intersectsLine(line2);
+
+    line1Line2Point && _drawTestPoint(line1Line2Point);
+
+    function _drawTestPoint(point, color, radius){
+        color  = color || 'red';
+        radius = radius || 5;
+        draw.circle(radius).move(point.x - radius / 2, point.y - radius / 2).attr({'fill': color});
+    }
+
+</script>
+</body>
+</html>

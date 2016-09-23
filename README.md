@@ -1,14 +1,13 @@
 # svg.intersections.js
-Intersections plugin for svg.js
+Intersections plugin for [svg.js](https://github.com/wout/svg.js)
 
-Find intersections of paths and lines.
+Finds intersections of paths and lines.
 
----
+## Installation
 
-AMD and CommonJS supported.
- 
-You can also include a compiled version in ./dist folder.
-It will add a global `SVGIntersections`
+`npm i -S svg.intersections.js`
+
+For non- AMD or CommonJS adds a global `SVGIntersections`.
 
 ## Usage
 
@@ -46,7 +45,7 @@ When checking with a path, first it splits it into line segments and checks a li
 
 Longer segment -> faster and less accurate
 
-Be **carefull** checking intersections of two paths, with a hight accuracy it can be really slow.
+**Be carefull** checking intersections of two paths (especially long), with a hight accuracy - it can be really slow.
 
 ### Avaliable methods
 
@@ -69,6 +68,9 @@ Be **carefull** checking intersections of two paths, with a hight accuracy it ca
 * [SVGIntersections](#module_SVGIntersections)
     * [~path_linePos(pathEl, linePos, [segmentLength])](#module_SVGIntersections..path_linePos) ⇒ <code>Array.&lt;Point&gt;</code>
     * [~linePos_linePos(line1Pos, line2Pos)](#module_SVGIntersections..linePos_linePos) ⇒ <code>Point</code> &#124; <code>undefined</code>
+    * [~fromLineToLinePos(line)](#module_SVGIntersections..fromLineToLinePos) ⇒ <code>Object</code>
+    * [~lengthBetweenTwoPoints(x1, y1, x2, y2)](#module_SVGIntersections..lengthBetweenTwoPoints) ⇒ <code>number</code>
+    * [~isPointOnLine(x1, y1, x2, y2, x, y)](#module_SVGIntersections..isPointOnLine) ⇒ <code>Point</code> &#124; <code>undefined</code>
     * [~Position](#module_SVGIntersections..Position) : <code>Object</code>
     * [~Point](#module_SVGIntersections..Point) : <code>Object</code>
 
@@ -101,6 +103,50 @@ Get intersection point for 2 lines depending on their start&end position points.
 | line1Pos | <code>Position</code> | First line start&end position |
 | line2Pos | <code>Position</code> | Second line start&end position |
 
+<a name="module_SVGIntersections..fromLineToLinePos"></a>
+
+### SVGIntersections~fromLineToLinePos(line) ⇒ <code>Object</code>
+Get start&end points from a line
+
+**Kind**: inner method of <code>[SVGIntersections](#module_SVGIntersections)</code>  
+**Returns**: <code>Object</code> - - Start&end points  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| line | <code>Object</code> | SVG.Line element |
+
+<a name="module_SVGIntersections..lengthBetweenTwoPoints"></a>
+
+### SVGIntersections~lengthBetweenTwoPoints(x1, y1, x2, y2) ⇒ <code>number</code>
+Find length between two points
+
+**Kind**: inner method of <code>[SVGIntersections](#module_SVGIntersections)</code>  
+**Returns**: <code>number</code> - - Length between start&end position  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| x1 | <code>number</code> | Start point x |
+| y1 | <code>number</code> | Start point y |
+| x2 | <code>number</code> | End point x |
+| y2 | <code>number</code> | End point y |
+
+<a name="module_SVGIntersections..isPointOnLine"></a>
+
+### SVGIntersections~isPointOnLine(x1, y1, x2, y2, x, y) ⇒ <code>Point</code> &#124; <code>undefined</code>
+Check if point is on line
+
+**Kind**: inner method of <code>[SVGIntersections](#module_SVGIntersections)</code>  
+**Returns**: <code>Point</code> &#124; <code>undefined</code> - - Check point or undefined  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| x1 | <code>number</code> | Start point x |
+| y1 | <code>number</code> | Start point y |
+| x2 | <code>number</code> | End point x |
+| y2 | <code>number</code> | End point y |
+| x | <code>number</code> | Check point x |
+| y | <code>number</code> | Check point y |
+
 <a name="module_SVGIntersections..Position"></a>
 
 ### SVGIntersections~Position : <code>Object</code>
@@ -124,11 +170,6 @@ Get intersection point for 2 lines depending on their start&end position points.
 | --- | --- |
 | x | <code>number</code> | 
 | y | <code>number</code> | 
-
-## Dependencies
-
-- [svg.js](https://github.com/wout/svg.js)
-- [distance-to-line-segment](https://github.com/scottglz/distance-to-line-segment)
 
 ## License
 

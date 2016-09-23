@@ -1,14 +1,13 @@
 # svg.intersections.js
-Intersections plugin for svg.js
+Intersections plugin for [svg.js](https://github.com/wout/svg.js)
 
-Find intersections of paths and lines.
+Finds intersections of paths and lines.
 
----
+## Installation
 
-AMD and CommonJS supported.
- 
-You can also include a compiled version in ./dist folder.
-It will add a global `SVGIntersections`
+`npm i -S svg.intersections.js`
+
+For non- AMD or CommonJS adds a global `SVGIntersections`.
 
 ## Usage
 
@@ -46,7 +45,7 @@ When checking with a path, first it splits it into line segments and checks a li
 
 Longer segment -> faster and less accurate
 
-Be **carefull** checking intersections of two paths, with a hight accuracy it can be really slow.
+**Be carefull** checking intersections of two paths (especially long), with a hight accuracy - it can be really slow.
 
 ### Avaliable methods
 

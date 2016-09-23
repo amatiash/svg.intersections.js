@@ -1,6 +1,6 @@
 {
   "name": "svg.intersections.js",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Intersection plugin for svg.js",
   "main": "svg.intersections.js",
   "scripts": {
@@ -11,7 +11,11 @@
     "svg.js",
     "intersection",
     "intersections",
-    "plugin"
+    "plugin",
+    "line",
+    "point",
+    "geometry",
+    "length"
   ],
   "author": "Anton Matiashevich <a.matiashevich@gmail.com>",
   "repository": {
@@ -21,8 +25,7 @@
   "github": "https://github.com/amatiash/svg.intersections.js",
   "license": "MIT",
   "dependencies": {
-    "svg.js": "2.x",
-    "distance-to-line-segment": "^0.2.0"
+    "svg.js": "2.x"
   },
   "devDependencies": {
     "jsdoc-to-markdown": "1.x"

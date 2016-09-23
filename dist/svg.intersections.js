@@ -70,12 +70,15 @@ var SVGIntersections =
 	(function(root, factory){
 
 	    if(true)
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(1), __webpack_require__(2)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(1)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 	    else if(typeof module === 'object' && module.exports)
-	        module.exports = factory(require('svg.js'), require('distance-to-line-segment'));
+	        module.exports = factory(require('svg.js'));
 
-	}(this, function(SVG, distanceToLineSegment){
+	    else
+	        root.SVGIntersections = factory(root.SVG);
+
+	}(this, function(SVG){
 
 	    var defaults = {
 	        segmentLength: 10
@@ -257,35 +260,29 @@ var SVGIntersections =
 	            return;
 
 	        // Check if any of start/end points are at another line
+	        // ----------------------------------------------------
 
-	        line1StartInLine2 = distanceToLineSegment(line2StartX, line2StartY, line2EndX, line2EndY, line1StartX, line1StartY);
-	        line1EndInLine2   = distanceToLineSegment(line2StartX, line2StartY, line2EndX, line2EndY, line1EndX, line1EndY);
-	        line2StartInLine1 = distanceToLineSegment(line1StartX, line1StartY, line1EndX, line1EndY, line2StartX, line2StartY);
-	        line2EndInLine1   = distanceToLineSegment(line1StartX, line1StartY, line1EndX, line1EndY, line2EndX, line2EndY);
+	        line2StartInLine1 = isPointOnLine(line1StartX, line1StartY, line1EndX, line1EndY, line2StartX, line2StartY);
 
-	        if(line1StartInLine2 === 0)
-	            return {
-	                x: line1StartX,
-	                y: line1StartY
-	            };
+	        if(line2StartInLine1)
+	            return line2StartInLine1;
 
-	        if(line1EndInLine2 === 0)
-	            return {
-	                x: line1EndX,
-	                y: line1EndY
-	            };
+	        line2EndInLine1 = isPointOnLine(line1StartX, line1StartY, line1EndX, line1EndY, line2EndX, line2EndY);
 
-	        if(line2StartInLine1 === 0)
-	            return {
-	                x: line2StartX,
-	                y: line2StartY
-	            };
+	        if(line2EndInLine1)
+	            return line2EndInLine1;
 
-	        if(line2EndInLine1 === 0)
-	            return {
-	                x: line2EndX,
-	                y: line2EndY
-	            };
+	        line1StartInLine2 = isPointOnLine(line2StartX, line2StartY, line2EndX, line2EndY, line1StartX, line1StartY);
+
+	        if(line1StartInLine2)
+	            return line1StartInLine2;
+
+	        line1EndInLine2 = isPointOnLine(line2StartX, line2StartY, line2EndX, line2EndY, line1EndX, line1EndY);
+
+	        if(line1EndInLine2)
+	            return line1EndInLine2;
+
+	        // ----------------------------------------------------
 
 	        a          = line1StartY - line2StartY;
 	        b          = line1StartX - line2StartX;
@@ -331,10 +328,49 @@ var SVGIntersections =
 	        }
 	    }
 
+	    /**
+	     * Find length between two points
+	     * @param   {number} x1 - Start point x
+	     * @param   {number} y1 - Start point y
+	     * @param   {number} x2 - End point x
+	     * @param   {number} y2 - End point y
+	     * @returns {number}    - Length between start&end position
+	     */
+	    function lengthBetweenTwoPoints(x1, y1, x2, y2){
+	        var a = x1 - x2,
+	            b = y1 - y2;
+	        return Math.sqrt(a * a + b * b);
+	    }
+
+	    /**
+	     * Check if point is on line
+	     * @param   {number} x1       - Start point x
+	     * @param   {number} y1       - Start point y
+	     * @param   {number} x2       - End point x
+	     * @param   {number} y2       - End point y
+	     * @param   {number} x        - Check point x
+	     * @param   {number} y        - Check point y
+	     * @returns {Point|undefined} - Check point or undefined
+	     */
+	    function isPointOnLine(x1, y1, x2, y2, x, y){
+	        var lineLength     = lengthBetweenTwoPoints(x1, y1, x2, y2),
+	            segment1Length = lengthBetweenTwoPoints(x1, y1, x, y),
+	            segment2Length = lengthBetweenTwoPoints(x2, y2, x, y),
+	            onLine         = lineLength === segment1Length + segment2Length;
+
+	        if(onLine)
+	            return {
+	                x: x,
+	                y: y
+	            }
+	    }
+
 	    return {
-	        path_linePos   : path_linePos,
-	        linePos_linePos: linePos_linePos,
-	        fromLineToLinePos: fromLineToLinePos
+	        path_linePos          : path_linePos,
+	        linePos_linePos       : linePos_linePos,
+	        fromLineToLinePos     : fromLineToLinePos,
+	        lengthBetweenTwoPoints: lengthBetweenTwoPoints,
+	        isPointOnLine         : isPointOnLine
 	    };
 
 	}));
@@ -344,95 +380,6 @@ var SVGIntersections =
 /***/ function(module, exports) {
 
 	module.exports = SVG;
-
-/***/ },
-/* 2 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	/**
-	 * @module distance-to-line-segment 
-	 */
-
-
-	/**
-	* Calculate the square of the distance between a finite line segment and a point. This 
-	* version takes somewhat less convenient parameters than distanceToLineSegment.squared,
-	* but is more efficient if you are calling it multiple times for the same line segment,
-	* since you pass in some easily pre-calculated values for the segment.
-	* @alias module:distance-to-line-segment.squaredWithPrecalc
-	* @param {number} lx1 - x-coordinate of line segment's first point
-	* @param {number} ly1 - y-coordinate of line segment's first point
-	* @param {number} ldx - x-coordinate of the line segment's second point minus lx1
-	* @param {number} ldy - y-coordinate of the line segment's second point minus ly1
-	* @param {number} lineLengthSquared - must be ldx\*ldx + ldy\*ldy. Remember, this precalculation
-	*    is for efficiency when calling this multiple times for the same line segment.
-	* @param {number} px - x coordinate of point
-	* @param {number} py - y coordinate of point
-	*/
-
-	function distanceSquaredToLineSegment2(lx1, ly1, ldx, ldy, lineLengthSquared, px, py) {
-	   var t; // t===0 at line pt 1 and t ===1 at line pt 2
-	   if (!lineLengthSquared) {
-	      // 0-length line segment. Any t will return same result
-	      t = 0;
-	   }
-	   else {
-	      t = ((px - lx1) * ldx + (py - ly1) * ldy) / lineLengthSquared;
-
-	      if (t < 0)
-	         t = 0;
-	      else if (t > 1)
-	         t = 1;
-	   }
-	   
-	   var lx = lx1 + t * ldx,
-	       ly = ly1 + t * ldy,
-	       dx = px - lx,
-	       dy = py - ly;
-	   return dx*dx + dy*dy;   
-	}
-
-	/**
-	* Calculate the square of the distance between a finite line segment and a point. 
-	* @alias module:distance-to-line-segment.squared
-	* @param {number} lx1 - x-coordinate of line segment's first point
-	* @param {number} ly1 - y-coordinate of line segment's first point
-	* @param {number} lx2 - x-coordinate of the line segment's second point
-	* @param {number} ly2 - y-coordinate of the line segment's second point
-	* @param {number} px - x coordinate of point
-	* @param {number} py - y coordinate of point
-	*/
-
-	function distanceSquaredToLineSegment(lx1, ly1, lx2, ly2, px, py) {
-	   var ldx = lx2 - lx1,
-	       ldy = ly2 - ly1,
-	       lineLengthSquared = ldx*ldx + ldy*ldy;
-	   return distanceSquaredToLineSegment2(lx1, ly1, ldx, ldy, lineLengthSquared, px, py);
-	}
-
-	/**
-	* Calculate the distance between a finite line segment and a point. Using distanceToLineSegment.squared can often be more efficient.
-	* @alias module:distance-to-line-segment
-	* @param {number} lx1 - x-coordinate of line segment's first point
-	* @param {number} ly1 - y-coordinate of line segment's first point
-	* @param {number} lx2 - x-coordinate of the line segment's second point
-	* @param {number} ly2 - y-coordinate of the line segment's second point
-	* @param {number} px - x coordinate of point
-	* @param {number} py - y coordinate of point
-	*/
-
-	function distanceToLineSegment(lx1, ly1, lx2, ly2, px, py)
-	{
-	   return Math.sqrt(distanceSquaredToLineSegment(lx1, ly1, lx2, ly2, px, py));
-	}
-
-
-	distanceToLineSegment.squared = distanceSquaredToLineSegment;
-	distanceToLineSegment.squaredWithPrecalc = distanceSquaredToLineSegment2;
-	module.exports = distanceToLineSegment;
-
 
 /***/ }
 /******/ ]);
