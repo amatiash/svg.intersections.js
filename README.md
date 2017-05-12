@@ -41,7 +41,7 @@ Result
 
 When checking with a path, first it splits it into line segments and checks a line-line intersection.
 
-`segmentLength` specifies the lengs of a segment.
+`segmentLength` specifies the length of a segment.
 
 Longer segment -> faster and less accurate
 
