@@ -3,6 +3,8 @@ Intersections plugin for [svg.js](https://github.com/wout/svg.js)
 
 Finds intersections of paths and lines.
 
+[Demo](https://amatiash.github.io/svg.intersections.js/demo.html).
+
 ## Installation
 
 `npm i -S svg.intersections.js`

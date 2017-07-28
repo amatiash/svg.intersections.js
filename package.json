@@ -1,6 +1,6 @@
 {
   "name": "svg.intersections.js",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "description": "Intersection plugin for svg.js",
   "main": "svg.intersections.js",
   "scripts": {
