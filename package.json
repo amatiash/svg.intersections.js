@@ -1,6 +1,6 @@
 {
   "name": "svg.intersections.js",
-  "version": "1.1.3",
+  "version": "1.1.4",
   "description": "Intersection plugin for svg.js",
   "main": "svg.intersections.js",
   "scripts": {
@@ -17,12 +17,12 @@
     "geometry",
     "length"
   ],
-  "author": "Anton Matiashevich <a.matiashevich@gmail.com>",
+  "author": "Anton Matiash",
   "repository": {
     "type": "git",
-    "url": "https://github.com/amatiash/svg.intersections.js.git"
+    "url": "https://github.com/antmatiash/svg.intersections.js.git"
   },
-  "github": "https://github.com/amatiash/svg.intersections.js",
+  "github": "https://github.com/antmatiash/svg.intersections.js",
   "license": "MIT",
   "dependencies": {
     "svg.js": "2.x"
