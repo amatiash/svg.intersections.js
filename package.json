@@ -17,12 +17,12 @@
     "geometry",
     "length"
   ],
-  "author": "Anton Matiash",
+  "author": "amatiash",
   "repository": {
     "type": "git",
-    "url": "https://github.com/antmatiash/svg.intersections.js.git"
+    "url": "https://github.com/amatiash/svg.intersections.js.git"
   },
-  "github": "https://github.com/antmatiash/svg.intersections.js",
+  "github": "https://github.com/amatiash/svg.intersections.js",
   "license": "MIT",
   "dependencies": {
     "svg.js": "2.x"
